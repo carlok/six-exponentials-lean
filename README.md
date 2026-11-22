@@ -1,9 +1,10 @@
 # The six exponentials theorem in Lean 4
 
 This repository holds one theorem and its proof, extracted from a larger
-library so that it can be checked on its own. It is prepared as a submission to
-[Palomar](https://github.com/PalomarRegistry/PalomarPolicy), a registry of
-machine-checked proofs.
+library so that it can be checked on its own. It is registered in
+[Palomar](https://palomar-registry.org/), a registry of machine-checked proofs, as
+[PALOMAR-2026-11-22-000020](https://palomar-registry.org/entry?id=PALOMAR-2026-11-22-000020&version=1)
+(version 1, at commit `b42d65b`).
 
 **Theorem** (Lang 1966; Ramachandra 1968). Let x₁, x₂ be complex numbers
 linearly independent over ℚ, and let y₁, y₂, y₃ be complex numbers linearly
