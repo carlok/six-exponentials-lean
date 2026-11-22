@@ -1,0 +1,199 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+# formalization.yaml v0.4
+version: "v0.4"
+
+project:
+  name: "The six exponentials theorem"
+  description: >-
+    A Lean 4 and Mathlib proof of the six exponentials theorem of Lang and
+    Ramachandra: if x₁, x₂ are complex numbers linearly independent over ℚ and
+    y₁, y₂, y₃ are complex numbers linearly independent over ℚ, then at least
+    one of the six numbers exp(xᵢyⱼ) is transcendental. The proof is Schneider's
+    method in the form of Lang and Ramachandra, relativised to a number field K:
+    Siegel's lemma gives an exponential polynomial with integer coefficients, not
+    all zero, that vanishes on a box of lattice points ∑ mⱼyⱼ; a Cauchy estimate
+    with zeros, played against Liouville's inequality in K, extends the vanishing
+    from each box to the next; and an exponential polynomial vanishing on the
+    whole lattice has zero coefficients, by Dedekind's independence of
+    characters. The library proves the number-field form for d numbers x and l
+    numbers y with d + l < dl, and the theorem is its case d = 2, l = 3. This
+    repository is a self-contained extract of the theorem from the library
+    github.com/carlok/diaz-modulus-lean, which is the canonical home of the proof.
+  authors:
+    - "Carlo Perassi"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "Carlo Perassi"
+
+# No `repository` block: this repository contains the whole proof development.
+
+classification:
+  arxiv: ["math.NT", "cs.LO"]
+  msc2020: ["11J81", "68V20"]
+
+sources:
+  - title: "Introduction to Transcendental Numbers"
+    authors:
+      - "Serge Lang"
+    type: "book"
+    location: "Addison-Wesley, 1966, chapter II"
+    relationship: formalizes
+    note: >-
+      Chapter II states and proves the six exponentials theorem. The Lean
+      statement is the theorem as stated there and in the later literature. The
+      Lean proof follows the same method (an auxiliary function from Siegel's
+      lemma, extension of its zeros, vanishing of its coefficients), written
+      relative to a fixed number field; it is a formal proof in that method, not
+      a line-by-line transcription of the chapter.
+    license: "unknown"
+    author_endorsement: "n/a"
+  - title: "Contributions to the theory of transcendental numbers I"
+    authors:
+      - "K. Ramachandra"
+    type: "paper"
+    location: "Acta Arithmetica 14 (1968), 65–72"
+    relationship: formalizes
+    note: >-
+      Ramachandra proved the six exponentials theorem independently of Lang. The
+      Lean statement is the same theorem.
+    license: "unknown"
+    author_endorsement: "n/a"
+
+related_formalizations:
+  - id: "https://github.com/carlok/diaz-modulus-lean"
+    relationship: other
+    note: >-
+      The canonical home of this proof, by the same author, and of a wider
+      library on Diaz's conjecture. The theorem has been there as
+      Diaz.six_exponentials since 2026-09-13. This repository copies its import
+      closure (eleven modules, 1,147 lines, at commit
+      edb9c5b92df0935ed6834e1d965fe9c18cfa21bb) with only the changes the Lean
+      module system needs and with the namespaces renamed, so that the theorem
+      can be checked on its own. The proofs are the same; corrections are made
+      there first. The library also proves results not included here.
+  - id: "https://github.com/telaviv/strong-six-exponentials"
+    relationship: independent
+    note: >-
+      An independent Lean development by another author, public since
+      2026-10-18, after the proof here. As its name says, it concerns the strong
+      six exponentials theorem, a strengthening of the theorem here. Cited as
+      related work only: nothing in this repository was taken from it, and its
+      code was not consulted.
+
+status:
+  scope: >-
+    Formalized and compared: the six exponentials theorem in its classical form,
+    SixExponentials.six_exponentials_theorem in Challenge.lean, for two complex
+    numbers x and three complex numbers y, each family linearly independent over
+    ℚ, with the conclusion that some exp(xᵢyⱼ) is not algebraic over ℚ.
+
+    Proved in the library but not compared: the number-field form
+    SixExponentials.SX.six_exponentials_of_numberField. For d complex numbers x
+    and l complex numbers y, each family linearly independent over ℚ, with
+    d + l < dl, and for every subfield K of ℂ of finite degree over ℚ, some
+    exp(xᵢyⱼ) lies outside K. The compared theorem is its case d = 2, l = 3.
+
+    Not formalized: the statement with three numbers x and two numbers y, which
+    follows by exchanging the families; any transcendence measure; and the four
+    exponentials conjecture, which is open.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: ["propext", "Classical.choice", "Quot.sound"]
+  main_results:
+    - declaration: "SixExponentials.six_exponentials_theorem"
+      file: "Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+    - declaration: "SixExponentials.six_exponentials"
+      file: "SixExponentials/Basic/six_exponentials.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["Claude (Anthropic); the model version was not recorded per proof"]
+      framework: "Claude Code"
+      tool_setup: >-
+        Claude agents (Anthropic) wrote the Lean proofs under Carlo Perassi's
+        direction, one statement at a time, and submitted them to the Prove2Me
+        platform (https://prove2.me), which checked and accepted them. They were
+        then mirrored into diaz-modulus-lean, where the main theorem has been since
+        2026-09-13. The proofs use ordinary Mathlib tactics and terms; there is no
+        native_decide.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "local machine"
+      prompting_notes: "not recorded"
+    - method: "agent"
+      models: ["Claude Opus 5.5"]
+      framework: "Claude Code"
+      tool_setup: >-
+        A Claude agent made this extract under Carlo Perassi's direction: it copied
+        the eleven modules from diaz-modulus-lean, made the module-system changes,
+        and wrote Challenge.lean, Solution.lean, this file, the README and the CI
+        workflow.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "local machine"
+      prompting_notes: "not recorded"
+  spend_usd: "not tracked"
+  notes: >-
+    The Lean code and the texts in this repository were written by Claude agents
+    (Anthropic) under the direction of Carlo Perassi, who is responsible for
+    them. No claim rests on an assertion by a language model: the proof is
+    checked by Lean's kernel at the pinned toolchain, and the axioms of the
+    compared theorem were audited with #print axioms.
+
+fidelity:
+  divergences: >-
+    None known. The Challenge states the theorem as Lang and Ramachandra do: two
+    complex numbers linearly independent over ℚ, three complex numbers linearly
+    independent over ℚ, and some exp(xᵢyⱼ) transcendental. Points a reader may
+    weigh:
+
+    (1) Transcendental ℚ z is Mathlib's "z is not algebraic over ℚ", which is
+    the classical meaning of transcendental for a complex number.
+    LinearIndependent ℚ is Mathlib's linear independence of a family in ℂ viewed
+    as a vector space over ℚ.
+
+    (2) Only the version with two numbers x and three numbers y is stated; the
+    version with three and two follows by exchanging the families.
+
+    (3) The compared theorem is named SixExponentials.six_exponentials_theorem
+    and the library theorem SixExponentials.six_exponentials. The names differ
+    only because Challenge and Solution must declare the same name while
+    Solution imports the library. The two statements are the same term.
+
+review:
+  status: "machine-checked; no human expert review of the Lean"
+  reviewers: []
+  notes: >-
+    Checks made: the Prove2Me platform checked and accepted the proofs when they
+    were first submitted. This repository builds with lake build under
+    leanprover/lean4:v4.35.0 with Mathlib v4.35.0. #print axioms lists only
+    propext, Classical.choice and Quot.sound for the compared theorem and for
+    the library theorem. The compared statement is the same Lean term in
+    Challenge.lean and in Solution.lean, checked by loading the two modules in
+    separate environments; Comparator is run in CI on Linux. No mathematician
+    has reviewed the Lean code, and the Challenge statement has not been
+    reviewed against the sources by anyone independent of its authors.
+
+alignment:
+  namespace: "SixExponentials"
+  statements:
+    - source: "Lang 1966, chapter II; Ramachandra 1968: the six exponentials theorem"
+      lean: "SixExponentials.six_exponentials_theorem"
+      module: "Challenge"
+      status: "proved"
+      note: >-
+        x : Fin 2 → ℂ and y : Fin 3 → ℂ are the two families; the conclusion
+        ∃ i j, Transcendental ℚ (Complex.exp (x i * y j)) says that one of the
+        six numbers exp(xᵢyⱼ) is transcendental. Proved by the library theorem
+        SixExponentials.six_exponentials.
+
+acknowledgements: >-
+  The Mathlib community, for Lean 4 and Mathlib, and the Prove2Me platform,
+  where the proofs were first submitted and checked.
